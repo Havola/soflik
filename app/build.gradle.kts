@@ -23,5 +23,10 @@ android {
     kotlinOptions {
         jvmTarget = "17"
     }
+dependencies {
+    implementation("androidx.core:core-ktx:1.12.0")
+    // Agar boshqa kutubxonalar bo'lsa, shu yerda qolaveradi
+}
+
 }
 
