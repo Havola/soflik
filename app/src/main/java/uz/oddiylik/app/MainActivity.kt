@@ -17,8 +17,6 @@ import android.view.Gravity
 import android.view.ViewGroup
 import android.widget.EditText
 import android.widget.Toast
-import androidx.core.app.ActivityCompat
-import androidx.core.content.ContextCompat
 
 class MainActivity : Activity() {
     private lateinit var root: LinearLayout
