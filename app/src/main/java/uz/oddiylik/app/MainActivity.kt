@@ -11,6 +11,7 @@ import android.net.ConnectivityManager
 import android.net.NetworkCapabilities
 import android.os.BatteryManager
 import android.os.Bundle
+import android.util.Log
 import android.graphics.Color
 import android.graphics.Typeface
 import android.graphics.drawable.GradientDrawable
@@ -48,9 +49,33 @@ class MainActivity : Activity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        val oldHandler = Thread.getDefaultUncaughtExceptionHandler()
+        Thread.setDefaultUncaughtExceptionHandler { thread, error ->
+            try {
+                File(filesDir, "oddiylik_crash.txt").writeText(
+                    Log.getStackTraceString(error)
+                )
+            } catch (_: Exception) {}
+            oldHandler?.uncaughtException(thread, error)
+        }
+
         window.statusBarColor = black
         window.navigationBarColor = black
         showLogin()
+
+        val crashFile = File(filesDir, "oddiylik_crash.txt")
+        if (crashFile.exists()) {
+            val crash = crashFile.readText()
+            crashFile.delete()
+            window.decorView.post {
+                android.app.AlertDialog.Builder(this)
+                    .setTitle("ODDIYLIK — ХАТО")
+                    .setMessage(crash.take(3500))
+                    .setPositiveButton("ЁПИШ", null)
+                    .show()
+            }
+        }
     }
 
     private fun dp(v: Int) = (v * resources.displayMetrics.density).toInt()
